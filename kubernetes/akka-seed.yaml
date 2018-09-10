@@ -1,0 +1,42 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  labels:
+    run: akka-seed
+  name: akka-seed
+spec:
+  serviceName: akka-seed
+  replicas: 2
+  selector:
+    matchLabels:
+      run: akka-seed
+  template:
+    metadata:
+      labels:
+        run: akka-seed
+    spec:
+      containers:
+      - name: akka-seed
+        image: jujadhav/cluster:c51
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+#        - name: BIND_HOST_NAME
+#          valueFrom:
+#            fieldRef:
+#              apiVersion: v1
+#              fieldPath: status.podIP
+        - name: SEED_NODES
+          value: akka-seed-0.akka-seed,akka-seed-1.akka-seed
+        - name: NODE_ROLE
+          value: seed        
+        command: ["/bin/sh", "-c", "HOST_NAME=${POD_NAME}.akka-seed java -jar /app/app.jar"]
+        livenessProbe:
+          tcpSocket:
+            port: 2551
+        ports:
+        - containerPort: 2551
+          protocol: TCP
+

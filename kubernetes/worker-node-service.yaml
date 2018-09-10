@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: akka-worker
+spec:
+  ports:
+  - port: 2551
+    protocol: TCP
+    targetPort: 2551
+  selector:
+    run: akka-worker
+  clusterIP: None
