@@ -1,4 +1,4 @@
-# Copyright 2017 Google Inc.
+/*# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License
+*/
 
 package com.example.akka;
 
@@ -23,13 +24,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import mu.node.klusterd.NodeConfigurator;
 
 public class SimpleClusterMain {
   private static final String CLUSTER_NAME = "ClusterSystem";
   private static ActorSystem actorSystem = null;
 
   public static void main(String[] args) throws IOException {
-    actorSystem = ActorSystem.create(CLUSTER_NAME);
+    actorSystem = ActorSystem.create(CLUSTER_NAME, NodeConfigurator.loadConfig());
     actorSystem.actorOf(NodeService.props(), "worker");
 	
 	 final ActorMaterializer materializer = ActorMaterializer.create(actorSystem);
