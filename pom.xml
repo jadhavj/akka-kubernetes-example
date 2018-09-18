@@ -39,6 +39,20 @@
 
     <build>
         <finalName>app</finalName>
+		<resources> 
+			<resource>
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+			</resource>
+			<resource>
+					<directory>src/main/scala</directory>
+					<includes>
+						<include>**/*.scala</include>
+					</includes>
+			</resource>
+		</resources>
         <plugins>
             <!-- Use Java 8 -->
             <plugin>
@@ -47,6 +61,41 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+			<plugin>
+				<groupId>net.alchim31.maven</groupId>
+				<artifactId>scala-maven-plugin</artifactId>
+				<version>3.2.2</version>
+				<inherited>true</inherited>
+				<executions>
+					<execution>
+						<id>scala-compile-first</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>add-source</goal>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>scala-test-compile</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+                <groupId>org.scala-tools</groupId>
+               <artifactId>maven-scala-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- Set up JAR manifest -->
             <plugin>
